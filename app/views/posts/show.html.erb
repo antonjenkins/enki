@@ -29,6 +29,9 @@
   <div>
     <p><%= form.text_field 'author' %><label for="comment_author"><small>Name or <a href="http://openidexplained.com/">OpenID</a> (required)</small></label></p>
     <p><%= form.text_area 'body' %><br /><small>(<a href="http://lesstile.rubyforge.org">lesstile enabled</a> - surround code blocks with ---)</small></p>
+		<p><%= get_captcha %></p>
+		<h2>IMPORTANT : How to enable reCAPTCHA in Enki</h2>
+		<p>Before using reCAPTCHA you need to obtain public and private keys from <%= link_to "http://recaptcha.net/", "http://recaptcha.net/" %> and put these in your environment.rb using the constants provided. Then just delete this text from views/posts/show.html.erb and you should be ready to go!</p>
     <p><%= submit_tag "Add Comment" %></p>
   </div>
 <% end -%>

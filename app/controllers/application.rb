@@ -3,6 +3,7 @@
 
 class ApplicationController < ActionController::Base
   include ExceptionNotifiable
+  include ReCaptcha::AppHelper
 
   helper :all # include all helpers, all the time
 

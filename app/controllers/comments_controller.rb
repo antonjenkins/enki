@@ -59,7 +59,7 @@ class CommentsController < ApplicationController
       @comment.blank_openid_fields
     end
 
-    if @comment.save
+    if validate_recap(params, @comment.errors) && @comment.save
       redirect_to post_path(@post)
     else
       render :template => 'posts/show'

@@ -7,6 +7,10 @@
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.2.2' unless defined? RAILS_GEM_VERSION
 
+# reCAPTCHA keys. Obtain these for your domain from http://recaptcha.net/
+RCC_PUB = "Put your reCAPTCHA public key in here"
+RCC_PRIV = "Put your reCAPTCHA private key in here"
+
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
@@ -15,6 +19,8 @@ Rails::Initializer.run do |config|
   # Application configuration should go into files in config/initializers
   # -- all .rb files in that directory are automatically loaded.
   # See Rails::Configuration for more options.
+
+  config.gem 'recaptcha'
 
   # Skip frameworks you're not going to use (only works if using vendor/rails).
   # To use Rails without a database, you must remove the Active Record framework
@@ -74,3 +80,4 @@ require 'openid/store/filesystem'
 require 'openid/extensions/sreg'
 
 require 'chronic'
+require 'recaptcha'
