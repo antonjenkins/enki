@@ -76,6 +76,7 @@ describe CommentsController, 'handling commenting' do
       @mock_post.stub!(attribute).and_return(value)
     end
     Post.stub!(:find_by_permalink).and_return(@mock_post)
+    session[:recaptcha_validated] = true
     @mock_post
   end
 
