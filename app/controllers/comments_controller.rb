@@ -33,7 +33,7 @@ class CommentsController < ApplicationController
     recaptcha_validated = session[:recaptcha_validated] || validate_recap(params, @comment.errors)
     session[:recaptcha_validated] = nil    
 
-    if @comment.requires_openid_authentication?
+    if @comment.requires_openid_authentication? && recaptcha_validated
       session[:pending_comment] = params[:comment]
       session[:recaptcha_validated] = recaptcha_validated
       return if authenticate_with_open_id(@comment.author, 
@@ -50,7 +50,7 @@ class CommentsController < ApplicationController
         when :successful
           @comment.post = @post
 
-          @comment.author_url              = @comment.author
+          @comment.author_url              = (@comment.author.downcase.starts_with?("http://") ? @comment.author : "http://#{@comment.author}")
           @comment.author                  = (registration["fullname"] || registration["nickname"] || @comment.author_url).to_s
           @comment.author_email            = registration["email"].to_s
 
@@ -58,6 +58,7 @@ class CommentsController < ApplicationController
         end
 
         session[:pending_comment] = nil
+        session[:recaptcha_validated] = nil
       end
     else
       @comment.blank_openid_fields
