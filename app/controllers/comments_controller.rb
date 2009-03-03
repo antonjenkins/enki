@@ -29,9 +29,13 @@ class CommentsController < ApplicationController
     @comment.post = @post
 
     session[:pending_comment] = nil
+    
+    recaptcha_validated = session[:recaptcha_validated] || validate_recap(params, @comment.errors)
+    session[:recaptcha_validated] = nil    
 
     if @comment.requires_openid_authentication?
       session[:pending_comment] = params[:comment]
+      session[:recaptcha_validated] = recaptcha_validated
       return if authenticate_with_open_id(@comment.author, 
           :optional => [:nickname, :fullname, :email]
         ) do |result, identity_url, registration|
@@ -59,7 +63,7 @@ class CommentsController < ApplicationController
       @comment.blank_openid_fields
     end
 
-    if validate_recap(params, @comment.errors) && @comment.save
+    if recaptcha_validated && @comment.save
       redirect_to post_path(@post)
     else
       render :template => 'posts/show'
